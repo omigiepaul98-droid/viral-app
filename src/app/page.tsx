@@ -1,10 +1,3 @@
-export default function Page() {
-  return (
-    <div className="flex h-screen items-center justify-center bg-blue-500 text-white text-4xl">
-      🚀 Tailwind is working!
-    </div>
-  );
-}
 "use client";
 import { useCoins } from "./context/CoinContext";
 import { useAds } from "./context/AdContext";
