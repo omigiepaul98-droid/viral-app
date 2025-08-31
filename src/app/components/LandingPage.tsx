@@ -40,7 +40,7 @@ export default function LandingPage() {
   const testimonials = [
     {
       name: "Sarah M.",
-      text: "I've earned over 500 coins just by following my favorite brands!",
+      text: "I&apos;ve earned over 500 coins just by following my favorite brands!",
       rating: 5
     },
     {
@@ -179,7 +179,7 @@ export default function LandingPage() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
+                <p className="text-gray-700 mb-4 italic">&quot;{testimonial.text}&quot;</p>
                 <div className="font-semibold text-gray-900">{testimonial.name}</div>
               </div>
             ))}
