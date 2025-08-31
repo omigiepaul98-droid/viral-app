@@ -1,4 +1,5 @@
 "use client";
+
 import { useCoins } from "./context/CoinContext";
 import { useAds } from "./context/AdContext";
 
@@ -7,9 +8,11 @@ export default function Page() {
   const { ads } = useAds();
 
   return (
-    <section>
+    <section className="p-6">
       <h1 className="text-2xl font-bold mb-4">🎯 Viral Feed</h1>
-      <p className="mb-6">Your Coins: <span className="font-semibold">{coins}</span></p>
+      <p className="mb-6">
+        Your Coins: <span className="font-semibold">{coins}</span>
+      </p>
 
       <div className="space-y-4">
         {ads.map((ad) => (
@@ -31,6 +34,3 @@ export default function Page() {
     </section>
   );
 }
-
-
-

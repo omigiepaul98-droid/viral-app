@@ -1,39 +1,77 @@
 "use client";
+
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-export default function Login() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (error) {
-      alert(error.message);
+      setMessage(error.message);
     } else {
-      alert("Login successful!");
+      setMessage("✅ Login successful!");
     }
+
+    setLoading(false);
   };
 
   return (
-    <section style={{ padding: "16px" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <input
-          type="email"
-          placeholder="Your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-    </section>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          Login to Viral
+        </h2>
+
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        {message && (
+          <p className="mt-4 text-center text-sm text-red-500">{message}</p>
+        )}
+
+        <p className="mt-6 text-center text-gray-600">
+          Don’t have an account?{" "}
+          <a href="/signup" className="text-blue-600 hover:underline">
+            Sign up
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }

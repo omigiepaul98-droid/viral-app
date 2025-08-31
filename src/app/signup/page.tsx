@@ -1,39 +1,77 @@
 "use client";
+
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-export default function Signup() {
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signUp({ email, password });
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
     if (error) {
-      alert(error.message);
+      setMessage(error.message);
     } else {
-      alert("Signup successful! Check your email for confirmation.");
+      setMessage("✅ Signup successful! Please check your email.");
     }
+
+    setLoading(false);
   };
 
   return (
-    <section style={{ padding: "16px" }}>
-      <h2>Create Account</h2>
-      <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Enter a password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Signup</button>
-      </form>
-    </section>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 to-purple-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">
+          Create an Account
+        </h2>
+
+        <form onSubmit={handleSignup} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+            required
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+          >
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
+        </form>
+
+        {message && (
+          <p className="mt-4 text-center text-sm text-red-500">{message}</p>
+        )}
+
+        <p className="mt-6 text-center text-gray-600">
+          Already have an account?{" "}
+          <a href="/login" className="text-purple-600 hover:underline">
+            Login
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }
